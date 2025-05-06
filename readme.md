@@ -1,4 +1,17 @@
+## How to use
+
+*Github CLI* 
+
 ```bash
-alias ansible="docker run -ti --rm -v ~/.ssh:/root/.ssh -v ~/.aws:/root/.aws -v $(pwd):/apps -w /apps alpine/ansible ansible"
-ansible <follow command>
+gh repo clone double-coder/setup-ansible-docker
+```
+
+From root run - 
+
+```bash
+# bring containers up
+docker compose up -d
+
+# connect to ansible container
+docker exec -it ansible_controller ansible-playbook inventory.ini ping.yml
 ```
