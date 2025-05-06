@@ -1,10 +1,6 @@
 ## How to use
 
-*Github CLI* 
-
-```bash
-gh repo clone double-coder/setup-ansible-docker
-```
+*Clone repo* 
 
 From root run - 
 
