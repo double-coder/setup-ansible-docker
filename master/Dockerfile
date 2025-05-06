@@ -1,15 +1,11 @@
-# Use an official Python slim image as the base
-FROM python:3.11-slim
+FROM alpine:latest
 
-# Update packages and install dependencies (e.g., openssh-client for SSH connectivity)
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    openssh-client \ 
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Install Ansible, SSH client, and dependencies
+RUN apk add --no-cache ansible openssh-client python3 sshpass
 
-# Install Ansible via pip
-RUN pip install --no-cache-dir ansible
-
-# Set the working directory (optional)
 WORKDIR /ansible
+
+# Disable host key checking for Ansible
+ENV ANSIBLE_HOST_KEY_CHECKING=False
+
+CMD ["sh"]

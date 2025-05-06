@@ -1,14 +1,18 @@
 services:
-  master:
+  ansible_controller:
     image: ansible
+    build: ./master
+    container_name: ansible_controller
     tty: true
     stdin_open: true
-    build: ./master
-    container_name: master_container
+    volumes:
+      - ./master:/ansible
   
-  worker:
+  target:
     build: ./worker
-    container_name: worker_container
+    container_name: target
+    expose:
+      - "22"
 
 networks:
   net:
