@@ -1,0 +1,9 @@
+---
+
+- name: Deploy custom script
+  hosts: localhost
+  become: false
+
+  tasks:
+    - name: BAD EXAMPLE
+      script: "script.sh"

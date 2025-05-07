@@ -1,0 +1,1 @@
+echo hello | tee -a /tmp/ansible.log

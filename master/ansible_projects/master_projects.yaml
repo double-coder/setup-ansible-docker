@@ -1,0 +1,55 @@
+---
+- name: Create projects
+  hosts: localhost
+  become: false
+  gather_facts: false
+
+  tasks:
+    - name: Faile if project_root is not set
+      ansible.builtin.fail:
+        msg: "project_root variable is not set and must be specified with -e project_root=/path/to/project"
+      when: project_root is not defined
+
+    - name: Create project directories
+      ansible.builtin.file:
+        path: "{{ project_root }}"
+        state: directory
+        mode: '0755'
+    
+    - name: Create the standard ansible directory structure
+      ansible.builtin.file:
+        path: "{{ project_root }}/{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - inventory
+        - inventory/group_vars
+        - inventory/host_vars
+        - playbooks
+        - roles
+        - plugins/modules
+        - plugins/filters
+    
+    - name: Create Project Anisble Configuration File
+      ansible.builtin.copy:
+        dest: "{{ project_root }}/ansible.cfg"
+        content: |
+          [defaults]
+          inventory = ./inventory/hosts
+          remote_user = ansible
+          host_key_checking = False
+
+    - name: Create Project Inventory File
+      ansible.builtin.copy:
+        dest: "{{ project_root }}/inventory/hosts"
+        content: |
+          [targets]
+          target ansible_host=target ansible_user=ansible ansible_ssh_pass=password
+
+
+    - name: Create Project Localhost Variables
+      ansible.builtin.copy:
+        dest: "{{ project_root }}/inventory/host_vars/localhost.yaml"
+        content: |
+          ansible_connection: local
+          ansible_python_interpreter: /usr/bin/python3

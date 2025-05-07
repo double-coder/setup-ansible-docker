@@ -1,0 +1,26 @@
+---
+
+- name: Test idempotency of playbook
+  hosts: localhost
+  become: false
+  gather_facts: false
+
+  vars:
+    marker_file: "/tmp/script_success"
+  tasks:
+    - name: Check if the script ran before
+      stat:
+        path: "{{ marker_file }}"
+      register: marker
+    
+    - name: Create marker file if it doesn't exist
+      block:
+      - name: Run custom script only if not run before
+        script: "script.sh"
+
+      - name: Create marker file to indicate script has been run
+        file:
+          path: "{{ marker_file }}"
+          state: touch
+          mode: '0644'
+      when: not marker.stat.exists

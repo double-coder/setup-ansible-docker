@@ -6,7 +6,7 @@ services:
     tty: true
     stdin_open: true
     volumes:
-      - ./master:/ansible
+      - ./master/ansible_projects:/ansible
   
   target:
     build: ./worker
