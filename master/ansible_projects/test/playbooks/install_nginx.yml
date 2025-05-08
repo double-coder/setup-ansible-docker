@@ -1,0 +1,37 @@
+---
+
+- name: Add nginx web server
+  hosts: localhost
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install nginx web server
+      ansible.builtin.package:
+        name: nginx
+
+    - name: Start nginx service
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Ensure firewall is running via firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: allow http and https traffic
+      ansible.builtin.firewalld:
+        service: http
+        state: enabled
+        permanent: true
+        immediate: true
+        offline: true
+
+    - name: Copy directory recursively to target node
+      ansible.builtin.copy:
+        src: ../html/
+        dest: /var/share/nginx/html/
+        mode: 0644
+        directory_mode: 0755

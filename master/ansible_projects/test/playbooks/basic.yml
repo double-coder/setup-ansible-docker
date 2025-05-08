@@ -1,0 +1,8 @@
+---
+
+- name: Resure basic roles
+  hosts: localhost
+  gather_facts: false
+  become: true
+  roles:
+    - base
