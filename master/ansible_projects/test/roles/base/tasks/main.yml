@@ -1,3 +1,12 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for base
+- name: Install base packages
+  ansible.builtin.package:
+    name:
+      - bash-completion
+      - nano
+      - vim
+      - git
+      - tree
+      - nginx
